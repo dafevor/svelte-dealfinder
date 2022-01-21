@@ -1,7 +1,18 @@
 <script>
+	import { onMount } from 'svelte';
 	import Navigation from './components/Navigation.svelte';
 	import Map from './components/Map.svelte';
-	import MapMarker from './components/MapMarker.svelte'
+	import MapMarker from './components/MapMarker.svelte';
+	import { fetchPoints } from './apis/api.js'
+
+	let myPosition = {};
+	let markers = [];
+
+	onMount(async () => {
+		myPosition = { lat: 4.658133, lng: 285.878971 } //My position
+		const nearPositions = await fetchPoints(myPosition, 10);
+		markers = nearPositions
+	});
 
 </script>
 
@@ -11,7 +22,7 @@
 	}
 
 	.app-header {
-  		min-height: 8vh;
+  		height: 8%;
   		display: flex;
   		flex-direction: column;
   		align-items: center;
@@ -21,12 +32,9 @@
 	}
 
 	.app-main {
-  		display: flex;
-  		flex-direction: column;
-	}	
-
-	/*@media (min-width: 640px) {
-	}*/
+  		width: 100%;
+		height: 92%;
+	}
 </style>
 
 <div class="app">
@@ -34,13 +42,10 @@
 		<Navigation/>
 	</header>
 	<main class="app-main">
-		<Map lat={35} lon={-84} zoom={3.5}>
-			<MapMarker lat={37.8225} lon={-122.0024} label="Svelte Body Shaping"/>
-			<MapMarker lat={33.8981} lon={-118.4169} label="Svelte Barbershop & Essentials"/>
-			<MapMarker lat={29.7230} lon={-95.4189} label="Svelte Waxing Studio"/>
-			<MapMarker lat={28.3378} lon={-81.3966} label="Svelte 30 Nutritional Consultants"/>
-			<MapMarker lat={40.6483} lon={-74.0237} label="Svelte Brands LLC"/>
-			<MapMarker lat={40.6986} lon={-74.4100} label="Svelte Medical Systems"/>
+		<Map lat={4.658133} lng={285.878971} zoom={15}>
+			{#each markers as marker}
+				<MapMarker lat={marker.lat} lng={marker.lng} label={marker.label}/>
+			{/each}
 		</Map>
 	</main>
 </div>

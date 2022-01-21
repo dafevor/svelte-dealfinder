@@ -11,7 +11,7 @@
 
     .nav .status-bar {
         height: 8vh;
-        background: #355c97;
+        background: #389735;
         opacity: 0.6;
         display: flex;
         flex: 1;

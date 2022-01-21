@@ -2,16 +2,16 @@
 	import { onMount, setContext } from 'svelte';
 	import { mapbox, key } from '../utils/mapbox.js';
 
+	setContext(key, {
+		getMap: () => map
+	});
+
 	export let lat;
-	export let lon;
+	export let lng;
 	export let zoom;
 
 	let container;
 	let map;
-
-	setContext(key, {
-		getMap: () => map
-	});
 
 	onMount(() => {
 		const link = document.createElement('link');
@@ -19,11 +19,10 @@
 		link.href = 'https://unpkg.com/mapbox-gl/dist/mapbox-gl.css';
 
 		link.onload = () => {
-			console.log("link onload");
 			map = new mapbox.Map({
 				container,
 				style: 'mapbox://styles/mapbox/streets-v9',
-				center: [lon, lat],
+				center: [lng, lat],
 				zoom
 			});
 		};
@@ -45,7 +44,8 @@
 
 <style>
 	div {
-		width: 100%;
-		height: 100%;
+		position: absolute;
+		width: inherit;
+		height: inherit;
 	}
 </style>
